@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation - Bharat &amp; Prachi</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+    }
+    
+    .cinzel {
+      font-family: 'Cinzel', serif;
+    }
+    
+    /* Diya Animation */
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 183, 77, 0.6)); }
+      50% { filter: drop-shadow(0 0 20px rgba(255, 183, 77, 0.9)); }
+    }
+    
+    .diya-flame {
+      animation: flicker 2s ease-in-out infinite;
+    }
+    
+    .diya-glow {
+      animation: glow 2s ease-in-out infinite;
+    }
+    
+    /* Card Flip Animation */
+    .card-container {
+      perspective: 1000px;
+    }
+    
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    
+    /* Reveal Animations */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .reveal-animation {
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .scale-in {
+      animation: scaleIn 0.5s ease-out forwards;
+    }
+    
+    /* Tappable Glow */
+    .tappable {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .tappable::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: linear-gradient(45deg, rgba(255, 183, 77, 0.3), rgba(255, 138, 101, 0.3));
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .tappable:hover::before {
+      opacity: 1;
+    }
+    
+    .tappable:active {
+      transform: scale(0.98);
+    }
+    
+    /* Timeline */
+    .timeline-item {
+      position: relative;
+      padding-left: 40px;
+      margin-bottom: 30px;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 30px;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255, 183, 77, 0.5), transparent);
+    }
+    
+    .timeline-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      z-index: 1;
+    }
+    
+    /* Scroll Reveal */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .scroll-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Mandala Pattern */
+    .mandala-bg {
+      background-image: radial-gradient(circle, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    
+    /* Sparkle Effect */
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+      }
+    }
+    
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 24px;
+      animation: sparkle 0.8s ease-out forwards;
+      z-index: 9999;
+    }
+    
+    /* Smooth Interactions */
+    .interactive {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .interactive:active {
+      transform: scale(0.95);
+    }
+    
+    /* Floating Animation */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Pulse Animation */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    /* Mobile Optimizations */
+    @media (max-width: 768px) {
+      .card-container {
+        height: 280px !important;
+      }
+      
+      .timeline-item {
+        padding-left: 35px;
+      }
+      
+      .timeline-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .card-container {
+        height: 260px !important;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full"></div>
+  <script>
+    const defaultConfig = {
+      opening_blessing: "Tap to Begin the Auspicious Invitation",
+      groom_name: "Bharat Bhushan",
+      groom_father: "Ajay Nandan Sahay",
+      groom_mother: "Anju Sahay",
+      bride_name: "Prachi Sinha",
+      bride_father: "Late Jagdish Prasad",
+      bride_mother: "Vibha Devi",
+      event_date: "14-02-2026",
+      venue_name: "Baranwal Bhawan",
+      venue_address: "Vindwashni Street, Kadamkuan",
+      background_color: "#FFF8F0",
+      primary_gold: "#D4AF37",
+      secondary_color: "#C9A66B",
+      text_color: "#3E2723",
+      card_background: "#FFFFFF",
+      font_family: "Cormorant Garamond",
+      font_size: 16
+    };
+    
+    let currentScreen = 'blessing';
+    let groomCardFlipped = false;
+    let brideCardFlipped = false;
+    
+    function render() {
+      const app = document.getElementById('app');
+      const config = window.elementSdk?.config || defaultConfig;
+      
+      const baseFont = config.font_size || defaultConfig.font_size;
+      const customFont = config.font_family || defaultConfig.font_family;
+      const fontStack = `${customFont}, Cormorant Garamond, serif`;
+      
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const goldColor = config.primary_gold || defaultConfig.primary_gold;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const cardBg = config.card_background || defaultConfig.card_background;
+      
+      if (currentScreen === 'blessing') {
+        app.innerHTML = `
+          <div class="h-full w-full flex items-center justify-center mandala-bg" style="background-color: ${bgColor};">
+            <div class="text-center px-6">
+              <!-- Diya SVG -->
+              <div class="diya-glow mb-8 flex justify-center">
+                <svg width="120" height="120" viewBox="0 0 120 120" class="diya-flame">
+                  <!-- Flame -->
+                  <ellipse cx="60" cy="40" rx="12" ry="20" fill="${goldColor}" opacity="0.8"/>
+                  <ellipse cx="60" cy="45" rx="8" ry="15" fill="${secondaryColor}"/>
+                  
+                  <!-- Diya Bowl -->
+                  <ellipse cx="60" cy="70" rx="35" ry="15" fill="${goldColor}"/>
+                  <path d="M 25 70 Q 25 80 60 85 Q 95 80 95 70" fill="${secondaryColor}"/>
+                  
+                  <!-- Oil -->
+                  <ellipse cx="60" cy="72" rx="28" ry="10" fill="${bgColor}" opacity="0.3"/>
+                  
+                  <!-- Wick -->
+                  <rect x="58" y="50" width="4" height="20" fill="${cardBg}" rx="2"/>
+                </svg>
+              </div>
+              
+              <!-- Om Symbol -->
+              <div style="font-size: ${baseFont * 3}px; color: ${goldColor}; margin-bottom: 24px; font-family: ${fontStack};">
+                ॐ
+              </div>
+              
+              <!-- Blessing Text -->
+              <p class="cinzel" style="font-size: ${baseFont * 1.25}px; color: ${textColor}; margin-bottom: 40px; font-weight: 300; letter-spacing: 2px;">
+                ${config.opening_blessing || defaultConfig.opening_blessing}
+              </p>
+              
+              <!-- Tap Button -->
+              <button id="enterBtn" class="tappable cinzel" style="background: linear-gradient(135deg, ${goldColor}, ${secondaryColor}); color: #FFFFFF; padding: 14px 40px; border-radius: 50px; border: none; font-size: ${baseFont * 1.125}px; font-weight: 600; letter-spacing: 1px; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);">
+                ENTER
+              </button>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('enterBtn').onclick = () => {
+          currentScreen = 'main';
+          render();
+        };
+      } else {
+        app.innerHTML = `
+          <div class="h-full w-full overflow-auto mandala-bg" style="background-color: ${bgColor};">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10" style="font-family: ${fontStack};">
+              
+              <!-- Header -->
+              <div class="text-center mb-12 scroll-reveal">
+                <div style="font-size: ${baseFont * 2.5}px; color: ${goldColor}; margin-bottom: 8px;">
+                  ॐ
+                </div>
+                <h1 class="cinzel" style="font-size: ${baseFont * 2}px; color: ${goldColor}; font-weight: 700; margin-bottom: 8px; letter-spacing: 3px;">
+                  WEDDING INVITATION
+                </h1>
+                <div style="width: 80px; height: 2px; background: linear-gradient(to right, transparent, ${goldColor}, transparent); margin: 16px auto;"></div>
+              </div>
+              
+              <!-- Couple Cards Section -->
+              <div class="mb-12 sm:mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 24px; font-weight: 600;">
+                  The Blessed Union
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+                  <!-- Groom Card -->
+                  <div class="card-container" style="height: 320px;">
+                    <div class="card-inner ${groomCardFlipped ? 'flipped' : ''}" id="groomCard">
+                      <!-- Front -->
+                      <div class="card-front interactive flex items-center justify-center" style="background: ${cardBg}; border: 2px solid ${goldColor}; box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);">
+                        <div class="text-center px-4">
+                          <div style="font-size: ${baseFont * 3}px; margin-bottom: 16px;">👔</div>
+                          <p class="cinzel" style="font-size: ${baseFont * 1.25}px; color: ${goldColor}; font-weight: 600; letter-spacing: 2px;">
+                            Groom's Side
+                          </p>
+                          <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; margin-top: 8px; opacity: 0.6;">
+                            Tap to flip
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <!-- Back -->
+                      <div class="card-back p-4 sm:p-6" style="background: linear-gradient(135deg, ${cardBg}, rgba(212, 175, 55, 0.05)); box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2); border: 2px solid ${goldColor};">
+                        <div class="h-full flex flex-col justify-center">
+                          <h3 class="cinzel" style="font-size: ${baseFont * 1.375}px; color: ${goldColor}; margin-bottom: 12px; font-weight: 700;">
+                            ${config.groom_name || defaultConfig.groom_name}
+                          </h3>
+                          <div style="color: ${textColor}; font-size: ${baseFont * 0.9375}px; line-height: 1.8;">
+                            <p><strong style="color: ${goldColor};">Father:</strong> ${config.groom_father || defaultConfig.groom_father}</p>
+                            <p><strong style="color: ${goldColor};">Mother:</strong> ${config.groom_mother || defaultConfig.groom_mother}</p>
+                            <p><strong style="color: ${goldColor};">Grandfather:</strong> Late Bachan Jee</p>
+                            <p><strong style="color: ${goldColor};">Grandmother:</strong> Late Vaidehi Devi</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Bride Card -->
+                  <div class="card-container" style="height: 320px;">
+                    <div class="card-inner ${brideCardFlipped ? 'flipped' : ''}" id="brideCard">
+                      <!-- Front -->
+                      <div class="card-front interactive flex items-center justify-center" style="background: ${cardBg}; border: 2px solid ${secondaryColor}; box-shadow: 0 4px 16px rgba(201, 166, 107, 0.2);">
+                        <div class="text-center px-4">
+                          <div style="font-size: ${baseFont * 3}px; margin-bottom: 16px;">👰</div>
+                          <p class="cinzel" style="font-size: ${baseFont * 1.25}px; color: ${secondaryColor}; font-weight: 600; letter-spacing: 2px;">
+                            Bride's Side
+                          </p>
+                          <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; margin-top: 8px; opacity: 0.6;">
+                            Tap to flip
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <!-- Back -->
+                      <div class="card-back p-4 sm:p-6" style="background: linear-gradient(135deg, ${cardBg}, rgba(201, 166, 107, 0.05)); box-shadow: 0 4px 16px rgba(201, 166, 107, 0.2); border: 2px solid ${secondaryColor};">
+                        <div class="h-full flex flex-col justify-center">
+                          <h3 class="cinzel" style="font-size: ${baseFont * 1.375}px; color: ${secondaryColor}; margin-bottom: 12px; font-weight: 700;">
+                            ${config.bride_name || defaultConfig.bride_name}
+                          </h3>
+                          <div style="color: ${textColor}; font-size: ${baseFont * 0.9375}px; line-height: 1.8;">
+                            <p><strong style="color: ${secondaryColor};">Father:</strong> ${config.bride_father || defaultConfig.bride_father}</p>
+                            <p><strong style="color: ${secondaryColor};">Mother:</strong> ${config.bride_mother || defaultConfig.bride_mother}</p>
+                            <p><strong style="color: ${secondaryColor};">Grandfather:</strong> Late Dwarika Prasad</p>
+                            <p><strong style="color: ${secondaryColor};">Grandmother:</strong> Late Usha Devi</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Family Addresses -->
+              <div class="mb-12 sm:mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 24px; font-weight: 600;">
+                  Family Residences
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
+                  <!-- Groom Address -->
+                  <div class="p-4 sm:p-6 rounded-lg interactive" style="background: ${cardBg}; border: 1px solid ${goldColor}; box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);">
+                    <div class="flex items-center justify-center mb-4 float-animation">
+                      <div style="font-size: ${baseFont * 2.5}px;">📍</div>
+                    </div>
+                    <h3 class="cinzel" style="font-size: ${baseFont * 1.125}px; color: ${goldColor}; margin-bottom: 12px; font-weight: 600;">
+                      Groom's Address
+                    </h3>
+                    <div style="color: ${textColor}; font-size: ${baseFont * 0.875}px; line-height: 1.6;">
+                      <p>Village: Jamsona</p>
+                      <p>Post: Awadhi</p>
+                      <p>P.S: Dawath</p>
+                      <p>District: Rohtas, Bihar – 802211</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Bride Address -->
+                  <div class="p-4 sm:p-6 rounded-lg interactive" style="background: ${cardBg}; border: 1px solid ${secondaryColor}; box-shadow: 0 2px 12px rgba(201, 166, 107, 0.15);">
+                    <div class="flex items-center justify-center mb-4 float-animation">
+                      <div style="font-size: ${baseFont * 2.5}px;">📍</div>
+                    </div>
+                    <h3 class="cinzel" style="font-size: ${baseFont * 1.125}px; color: ${secondaryColor}; margin-bottom: 12px; font-weight: 600;">
+                      Bride's Address
+                    </h3>
+                    <div style="color: ${textColor}; font-size: ${baseFont * 0.875}px; line-height: 1.6;">
+                      <p>Khatkachak, Gaya Ji</p>
+                      <p>Bihar – 823001</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Event Timeline -->
+              <div class="mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 8px; font-weight: 600;">
+                  Auspicious Programs
+                </h2>
+                <p class="text-center" style="font-size: ${baseFont * 1.25}px; color: ${goldColor}; margin-bottom: 32px; font-weight: 600;">
+                  ${config.event_date || defaultConfig.event_date}
+                </p>
+                
+                <div class="max-w-2xl mx-auto">
+                  <!-- Haldi Event -->
+                  <div class="timeline-item interactive">
+                    <div class="timeline-icon pulse-animation" style="background: ${goldColor}; color: ${bgColor};">
+                      🌼
+                    </div>
+                    <div>
+                      <h3 class="cinzel" style="font-size: ${baseFont * 1.125}px; color: ${goldColor}; margin-bottom: 8px;">
+                        Haldi, Mehendi & Sangeet
+                      </h3>
+                      <p style="font-size: ${baseFont}px; color: ${textColor}; font-weight: 600;">
+                        11:45 AM onwards (Morning)
+                      </p>
+                      <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; opacity: 0.8; margin-top: 4px;">
+                        Traditional ceremonies with music and celebration
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <!-- Baraat Event -->
+                  <div class="timeline-item interactive">
+                    <div class="timeline-icon pulse-animation" style="background: ${secondaryColor}; color: ${bgColor}; animation-delay: 0.3s;">
+                      🎺
+                    </div>
+                    <div>
+                      <h3 class="cinzel" style="font-size: ${baseFont * 1.125}px; color: ${secondaryColor}; margin-bottom: 8px;">
+                        Baraat Prasthan
+                      </h3>
+                      <p style="font-size: ${baseFont}px; color: ${textColor}; font-weight: 600;">
+                        5:00 PM (Evening)
+                      </p>
+                      <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; opacity: 0.8; margin-top: 4px;">
+                        The groom's procession departs with joy
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <!-- Pritibhoj Event -->
+                  <div class="timeline-item interactive">
+                    <div class="timeline-icon pulse-animation" style="background: ${goldColor}; color: ${bgColor}; animation-delay: 0.6s;">
+                      🍽️
+                    </div>
+                    <div>
+                      <h3 class="cinzel" style="font-size: ${baseFont * 1.125}px; color: ${goldColor}; margin-bottom: 8px;">
+                        Pritibhoj
+                      </h3>
+                      <p style="font-size: ${baseFont}px; color: ${textColor}; font-weight: 600;">
+                        From 7:00 PM onwards till your arrival
+                      </p>
+                      <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; opacity: 0.8; margin-top: 4px;">
+                        Feast and celebration with loved ones
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Venue -->
+              <div class="mb-12 sm:mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 24px; font-weight: 600;">
+                  Venue Location
+                </h2>
+                
+                <div class="max-w-md mx-auto p-4 sm:p-6 rounded-lg text-center interactive" style="background: ${cardBg}; border: 1px solid ${goldColor}; box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);">
+                  <div class="mb-4 float-animation">
+                    <div style="font-size: ${baseFont * 3}px;">📍</div>
+                  </div>
+                  <h3 class="cinzel" style="font-size: ${baseFont * 1.375}px; color: ${goldColor}; margin-bottom: 16px; font-weight: 700;">
+                    ${config.venue_name || defaultConfig.venue_name}
+                  </h3>
+                  <p style="color: ${textColor}; font-size: ${baseFont * 0.9375}px; line-height: 1.6; margin-bottom: 16px;">
+                    ${config.venue_address || defaultConfig.venue_address}<br>
+                    (Adjacent lane to Gyaan Ganga)<br>
+                    Patna, Bihar – 800001
+                  </p>
+                  <a href="https://maps.app.goo.gl/mn1X1tgY9pGXRN5D6" target="_blank" rel="noopener noreferrer" class="inline-block interactive cinzel" style="background: ${goldColor}; color: #FFFFFF; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: ${baseFont * 0.9375}px; font-weight: 600; margin-top: 8px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);">
+                    Open in Maps
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Contact Section -->
+              <div class="mb-12 sm:mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 24px; font-weight: 600;">
+                  Contact Us
+                </h2>
+                
+                <div class="max-w-md mx-auto space-y-3">
+                  <!-- Contact 1 -->
+                  <div class="p-3 sm:p-4 rounded-lg flex items-center interactive" style="background: ${cardBg}; border: 1px solid ${goldColor}; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);">
+                    <div style="font-size: ${baseFont * 2}px; margin-right: 16px;">
+                      📞
+                    </div>
+                    <div class="flex-1">
+                      <a href="tel:8271948677" style="color: ${goldColor}; font-size: ${baseFont * 1.0625}px; text-decoration: none; font-weight: 600;">
+                        8271948677
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Contact 2 -->
+                  <div class="p-3 sm:p-4 rounded-lg flex items-center interactive" style="background: ${cardBg}; border: 1px solid ${goldColor}; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);">
+                    <div style="font-size: ${baseFont * 2}px; margin-right: 16px;">
+                      📞
+                    </div>
+                    <div class="flex-1">
+                      <a href="tel:9122074248" style="color: ${goldColor}; font-size: ${baseFont * 1.0625}px; text-decoration: none; font-weight: 600;">
+                        9122074248
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Contact 3 -->
+                  <div class="p-3 sm:p-4 rounded-lg flex items-center interactive" style="background: ${cardBg}; border: 1px solid ${goldColor}; box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);">
+                    <div style="font-size: ${baseFont * 2}px; margin-right: 16px;">
+                      📞
+                    </div>
+                    <div class="flex-1">
+                      <a href="tel:8936060651" style="color: ${goldColor}; font-size: ${baseFont * 1.0625}px; text-decoration: none; font-weight: 600;">
+                        8936060651 (Satish)
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Blessings Section -->
+              <div class="mb-12 sm:mb-16 scroll-reveal">
+                <h2 class="cinzel text-center" style="font-size: ${baseFont * 1.5}px; color: ${textColor}; margin-bottom: 24px; font-weight: 600;">
+                  Seeking Blessings
+                </h2>
+                
+                <div class="max-w-md mx-auto p-4 sm:p-6 rounded-lg text-center interactive" style="background: ${cardBg}; border: 1px solid ${secondaryColor}; box-shadow: 0 2px 12px rgba(201, 166, 107, 0.15);">
+                  <div class="mb-4 float-animation">
+                    <div style="font-size: ${baseFont * 2.5}px;">📜</div>
+                  </div>
+                  <div style="color: ${textColor}; font-size: ${baseFont * 0.9375}px; line-height: 1.8;">
+                    <p style="margin-bottom: 16px;">
+                      <strong style="color: ${secondaryColor};">Darshanabhilashi</strong><br>
+                      Shanti Bhushan & Whole Chitransh Family
+                    </p>
+                    <div style="width: 60px; height: 1px; background: ${goldColor}; margin: 16px auto;"></div>
+                    <p>
+                      <strong style="color: ${goldColor};">Aakanshi</strong><br>
+                      Anju & Ajay Sahay
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Footer -->
+              <div class="text-center py-6 sm:py-8" style="border-top: 1px solid ${goldColor};">
+                <div style="font-size: ${baseFont * 1.5}px; color: ${goldColor}; margin-bottom: 8px;">
+                  ॐ शान्ति शान्ति शान्ति ॐ
+                </div>
+                <p style="font-size: ${baseFont * 0.875}px; color: ${textColor}; opacity: 0.7;">
+                  We joyfully await your presence
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        `;
+        
+        // Add scroll reveal functionality
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+          observer.observe(el);
+        });
+        
+        // Groom card flip
+        const groomCardEl = document.getElementById('groomCard');
+        if (groomCardEl) {
+          groomCardEl.onclick = () => {
+            groomCardFlipped = !groomCardFlipped;
+            render();
+          };
+        }
+        
+        // Bride card flip
+        const brideCardEl = document.getElementById('brideCard');
+        if (brideCardEl) {
+          brideCardEl.onclick = () => {
+            brideCardFlipped = !brideCardFlipped;
+            render();
+          };
+        }
+        
+        // Add sparkle effect on any click/touch
+        const sparkleEmojis = ['✨', '💫', '⭐', '🌟', '💛', '🧡', '💖', '🌺', '🌸', '🎉'];
+        
+        document.querySelectorAll('.interactive').forEach(element => {
+          element.addEventListener('click', (e) => {
+            createSparkle(e.clientX, e.clientY);
+          });
+        });
+        
+        function createSparkle(x, y) {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+          sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+          sparkle.style.left = x + 'px';
+          sparkle.style.top = y + 'px';
+          document.body.appendChild(sparkle);
+          
+          setTimeout(() => {
+            sparkle.remove();
+          }, 800);
+        }
+      }
+    }
+    
+    async function onConfigChange(config) {
+      render();
+    }
+    
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.card_background || defaultConfig.card_background,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.card_background = value;
+                window.elementSdk.setConfig({ card_background: value });
+              }
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.primary_gold || defaultConfig.primary_gold,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.primary_gold = value;
+                window.elementSdk.setConfig({ primary_gold: value });
+              }
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            if (window.elementSdk) {
+              window.elementSdk.config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            if (window.elementSdk) {
+              window.elementSdk.config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }
+      };
+    }
+    
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['opening_blessing', config.opening_blessing || defaultConfig.opening_blessing],
+        ['groom_name', config.groom_name || defaultConfig.groom_name],
+        ['groom_father', config.groom_father || defaultConfig.groom_father],
+        ['groom_mother', config.groom_mother || defaultConfig.groom_mother],
+        ['bride_name', config.bride_name || defaultConfig.bride_name],
+        ['bride_father', config.bride_father || defaultConfig.bride_father],
+        ['bride_mother', config.bride_mother || defaultConfig.bride_mother],
+        ['event_date', config.event_date || defaultConfig.event_date],
+        ['venue_name', config.venue_name || defaultConfig.venue_name],
+        ['venue_address', config.venue_address || defaultConfig.venue_address]
+      ]);
+    }
+    
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+    
+    // Initial render
+    render();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b7d3b53930a257c',t:'MTc2NzM4ODEwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
